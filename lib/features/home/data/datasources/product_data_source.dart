@@ -1,6 +1,5 @@
 import 'dart:io';
 
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_application_api/core/api_client.dart';
 import 'package:flutter_application_api/core/api_constatnts.dart';
@@ -22,37 +21,12 @@ class ProductDataSourceImpl extends ProductDataSource {
   @override
   Future<Either<AppError, List<ProductDataEntity>>> getProductData({required NoParams noParams}) async {
     try {
-      final productData = await client.get(
-          'https://praticle-service.s3.ap-south-1.amazonaws.com/intermidiate_task.json',
-          header: ApiConstatnts().headers);
+      final productData = await client.get('https://dummyjson.com/products', header: ApiConstatnts().headers);
       final parseData = ProductModel.fromJson(productData);
-
-      if (parseData.status == 200 && parseData.success == "true" && parseData.data.isNotEmpty) {
-        return Right(parseData.data[0].productData);
-      } else if (parseData.status == 404) {
-        return Left(
-          AppError(
-            errorType: AppErrorType.data,
-            errorMessage: '${parseData.message} (Error:100 & ${parseData.status.toString()})',
-          ),
-        );
-      } else if (parseData.status == 406 || parseData.status == 405) {
-        // saveError(
-        //   params: ErrorParams(
-        //     errType: ErrorLogType.api,
-        //     url: paramsUrl,
-        //     errMsg: '${parseData.message} (Error:100 & ${parseData.status.toString()})',
-        //   ),
-        // );
-        return Left(
-          AppError(
-            errorType: AppErrorType.api,
-            errorMessage: '${parseData.message} (Error:100 & ${parseData.status.toString()})',
-          ),
-        );
+      if (parseData.products.isNotEmpty) {
+        return Right(parseData.products);
       } else {
-        // saveError(params: ErrorParams(errType: ErrorLogType.api, url: paramsUrl, errMsg: parseData.message.toString()));
-        return Left(AppError(errorType: AppErrorType.api, errorMessage: parseData.message));
+        return Left(AppError(errorType: AppErrorType.api, errorMessage: parseData.toString()));
       }
     } on UnauthorisedException catch (_) {
       return const Left(AppError(errorType: AppErrorType.unauthorised, errorMessage: "Un-Authorised"));

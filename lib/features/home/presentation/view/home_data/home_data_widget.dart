@@ -25,18 +25,20 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
 
   Widget commonTile({required HomeLoadedState state, required int index}) {
     var productDetails = state.productDataEntity;
+
+   
     return ListTile(
       onTap: () {},
       leading: CircleAvatar(
-        backgroundImage: NetworkImage(productDetails[index].userProfile),
+        backgroundImage: NetworkImage(productDetails[index].images[0]),
       ),
-      title: Text(productDetails[index].categoryName),
+      title: Text(productDetails[index].title),
       subtitle: Text(
-        productDetails[index].subCategoryName,
+        productDetails[index].category,
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: Text('${productDetails[index].minPrice} ${productDetails[index].currency}'),
+      trailing: Text('${productDetails[index].price} ${productDetails[index].stock}'),
     );
   }
 }
