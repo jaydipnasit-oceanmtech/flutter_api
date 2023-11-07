@@ -3,6 +3,7 @@ import 'package:flutter_application_api/%20common/constans/colors.dart';
 import 'package:flutter_application_api/di/get_it.dart';
 import 'package:flutter_application_api/features/home/presentation/cubit/home_cubit.dart';
 import 'package:flutter_application_api/features/home/presentation/view/home_data/home_data_screen.dart';
+import 'package:flutter_application_api/features/home/presentation/view/home_data/productdetial_Screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -53,7 +54,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
           contentPadding: const EdgeInsets.all(1),
           hintStyle: GoogleFonts.inter(
             color: black,
-            fontSize: 15.sp,
+            fontSize: 15,
             fontWeight: FontWeight.w500,
           ),
         ),
@@ -63,7 +64,6 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
 
   ///catagoriList
   Widget sugarList({required HomeLoadedState state}) {
-    print("dcfdcdccddcdcdc");
     return SizedBox(
       height: 110.h,
       child: ListView.builder(
@@ -143,11 +143,11 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   }
 
 //   ///Bestsellers
-  Widget bestsellers({required String text, required HomeLoadedState state}) {
+  Widget bestsellers({required HomeLoadedState state}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: "${state.productDataEntity[2].title}", color: black, size: 20),
         SizedBox(height: 2.h),
         Container(
             height: 320.h,
@@ -209,19 +209,21 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                       bestseButton(
                         tax: textItems(text: "Buy Now", color: white, size: 15),
                         onpress: () {
-                          // Navigator.push(
-                          //   context,
-                          //   pageNaviagation(
-                          //       screen: ProductDetial(
-                          //     productid: bestsellers.productJson!.image!.src.toString(),
-                          //     tital: bestsellers.productJson!.title.toString(),
-                          //     price: pricedata.price.toString().split(".")[0],
-                          //     discount: pricedata.compareAtPrice.toString(),
-                          //     status: bestsellers.productJson!.status.toString(),
-                          //     idno: bestsellers.productJson!.id,
-                          //     titalproduct: data.resbody!.sections![2].title,
-                          //   )),
-                          // );
+                          Navigator.push(
+                            context,
+                            pageNaviagation(
+                                screen: ProductDetial(
+                              productid: bestsellers.productJson!.image!.src.toString(),
+                              tital: bestsellers.productJson!.title.toString(),
+                              price: pricedata.price.toString().split(".")[0],
+                              discount: pricedata.compareAtPrice.toString(),
+                              status: bestsellers.productJson!.status.toString(),
+                              idno: bestsellers.productJson!.id,
+                              titalproduct: state.productDataEntity[2].title,
+                              state: state,
+                             
+                            )),
+                          );
                         },
                       ),
                     ]),
@@ -234,12 +236,12 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   }
 
   ///HOT DEALS Widgets
-  Widget hotDeals({required String text, required HomeLoadedState state}) {
+  Widget hotDeals({required HomeLoadedState state}) {
     var dataCount = state.productDataEntity[3].contentData!.length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: "${state.productDataEntity[3].title}", color: black, size: 20),
         SizedBox(height: 15.h),
         SizedBox(
           height: 220.h,
@@ -271,20 +273,13 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
 
   ///TopPick Widgets
   Widget topPicks({
-    required String text,
-    required double bottomL,
-    required double bottomR,
-    // ignore: non_constant_identifier_names
-    required double TopR,
-    // ignore: non_constant_identifier_names
-    required double TopL,
     required HomeLoadedState state,
   }) {
     var dataCount = state.productDataEntity[6].contentData!.length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: "${state.productDataEntity[6].title}", color: black, size: 20),
         SizedBox(height: 15.h),
         SizedBox(
           height: 220.h,
@@ -299,15 +294,9 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                 width: 340.w,
                 margin: EdgeInsets.symmetric(horizontal: 10.w),
                 decoration: BoxDecoration(
-                  color: Colors.grey,
-                  image: DecorationImage(image: NetworkImage(hotDeals.mediaUrl.toString()), fit: BoxFit.fill),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(bottomL),
-                    bottomRight: Radius.circular(bottomR),
-                    topLeft: Radius.circular(TopL),
-                    topRight: Radius.circular(TopR),
-                  ),
-                ),
+                    color: Colors.grey,
+                    image: DecorationImage(image: NetworkImage(hotDeals.mediaUrl.toString()), fit: BoxFit.fill),
+                    borderRadius: BorderRadius.all(Radius.circular(15.r))),
               );
             },
           ),
@@ -318,20 +307,13 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
 
 //SUGAR BEAUTY BLOG Widgets
   Widget sugarWidgets({
-    required String text,
-    required double bottomL,
-    required double bottomR,
-    // ignore: non_constant_identifier_names
-    required double TopR,
-    // ignore: non_constant_identifier_names
-    required double TopL,
     required HomeLoadedState state,
   }) {
     var dataCount = state.productDataEntity[13].contentData!.length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: "${state.productDataEntity[13].title}", color: black, size: 20),
         SizedBox(height: 15.h),
         SizedBox(
           height: 220.h,
@@ -346,15 +328,9 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                 width: 340.w,
                 margin: EdgeInsets.symmetric(horizontal: 10.w),
                 decoration: BoxDecoration(
-                  color: Colors.grey,
-                  image: DecorationImage(image: NetworkImage(hotDeals.mediaUrl.toString()), fit: BoxFit.fill),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(bottomL),
-                    bottomRight: Radius.circular(bottomR),
-                    topLeft: Radius.circular(TopL),
-                    topRight: Radius.circular(TopR),
-                  ),
-                ),
+                    color: Colors.grey,
+                    image: DecorationImage(image: NetworkImage(hotDeals.mediaUrl.toString()), fit: BoxFit.fill),
+                    borderRadius: BorderRadius.all(Radius.circular(15.r))),
               );
             },
           ),
@@ -364,11 +340,11 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   }
 
 //   ///JUSTIN && TRY BEFORE Widgets
-  Widget justIn({required String text, required HomeLoadedState state}) {
+  Widget justIn({required HomeLoadedState state}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: "${state.productDataEntity[4].title}", color: black, size: 20),
         SizedBox(height: 7.h),
         SizedBox(
           height: 280.h,
@@ -421,19 +397,20 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                   bestseButton(
                     tax: textItems(text: "Buy Now", color: white, size: 15),
                     onpress: () {
-                      // Navigator.push(
-                      //     context,
-                      //     pageNaviagation(
-                      //       screen: ProductDetial(
-                      //         productid: bestsellers.productJson!.image!.src.toString(),
-                      //         tital: bestsellers.productJson!.title.toString(),
-                      //         price: pricedata.price.toString().split(".")[0],
-                      //         discount: pricedata.compareAtPrice.toString(),
-                      //         status: bestsellers.productJson!.status.toString(),
-                      //         idno: bestsellers.productJson!.id,
-                      //         titalproduct: data.resbody!.sections![4].title,
-                      //       ),
-                      //     ));
+                      Navigator.push(
+                          context,
+                          pageNaviagation(
+                            screen: ProductDetial(
+                              productid: bestsellers.productJson!.image!.src.toString(),
+                              tital: bestsellers.productJson!.title.toString(),
+                              price: pricedata.price.toString().split(".")[0],
+                              discount: pricedata.compareAtPrice.toString(),
+                              status: bestsellers.productJson!.status.toString(),
+                              idno: bestsellers.productJson!.id,
+                              titalproduct: state.productDataEntity[4].title,
+                                state: state,
+                            ),
+                          ));
                     },
                   ),
                 ]),
@@ -446,11 +423,11 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   }
 
   ///GiftingWidgetWidgets
-  Widget giftingWidget({required String text, required HomeLoadedState state}) {
+  Widget giftingWidget({required HomeLoadedState state}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: "${state.productDataEntity[7].title}", color: black, size: 20),
         SizedBox(height: 7.h),
         SizedBox(
           height: 280.h,
@@ -502,19 +479,20 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                     const Spacer(),
                     bestseButton(
                       onpress: () {
-                        // Navigator.push(
-                        //     context,
-                        //     pageNaviagation(
-                        //       screen: ProductDetial(
-                        //         productid: bestsellers.productJson!.image!.src.toString(),
-                        //         tital: bestsellers.productJson!.title.toString(),
-                        //         price: pricedata.price.toString().split(".")[0],
-                        //         discount: pricedata.compareAtPrice.toString(),
-                        //         status: bestsellers.productJson!.status.toString(),
-                        //         idno: bestsellers.productJson!.id,
-                        //         titalproduct: data.resbody!.sections![7].title,
-                        //       ),
-                        //     ));
+                        Navigator.push(
+                            context,
+                            pageNaviagation(
+                              screen: ProductDetial(
+                                productid: bestsellers.productJson!.image!.src.toString(),
+                                tital: bestsellers.productJson!.title.toString(),
+                                price: pricedata.price.toString().split(".")[0],
+                                discount: pricedata.compareAtPrice.toString(),
+                                status: bestsellers.productJson!.status.toString(),
+                                idno: bestsellers.productJson!.id,
+                                titalproduct: state.productDataEntity[7].title,
+                                  state: state,
+                              ),
+                            ));
                       },
                       tax: textItems(text: "Buy Now", color: white, size: 15),
                     ),
@@ -530,11 +508,11 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   }
 
   ///SuperSavers Widgets
-  Widget superSavers({required String text, required HomeLoadedState state}) {
+  Widget superSavers({required HomeLoadedState state}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: "${state.productDataEntity[9].title}", color: black, size: 20),
         SizedBox(height: 2.h),
         Container(
             height: 320.h,
@@ -593,19 +571,20 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                       bestseButton(
                         tax: textItems(text: "Buy Now", color: white, size: 15),
                         onpress: () {
-                          // Navigator.push(
-                          //     context,
-                          //     pageNaviagation(
-                          //       screen: ProductDetial(
-                          //         productid: bestsellers.productJson!.image!.src.toString(),
-                          //         tital: bestsellers.productJson!.title.toString(),
-                          //         price: pricedata.price.toString().split(".")[0],
-                          //         discount: pricedata.compareAtPrice.toString(),
-                          //         status: bestsellers.productJson!.status.toString(),
-                          //         idno: bestsellers.productJson!.id,
-                          //         titalproduct: data.resbody!.sections![9].title,
-                          //       ),
-                          //     ));
+                          Navigator.push(
+                              context,
+                              pageNaviagation(
+                                screen: ProductDetial(
+                                  productid: bestsellers.productJson!.image!.src.toString(),
+                                  tital: bestsellers.productJson!.title.toString(),
+                                  price: pricedata.price.toString().split(".")[0],
+                                  discount: pricedata.compareAtPrice.toString(),
+                                  status: bestsellers.productJson!.status.toString(),
+                                  idno: bestsellers.productJson!.id,
+                                  titalproduct: state.productDataEntity[9].title,
+                                    state: state,
+                                ),
+                              ));
                         },
                       ),
                       SizedBox(
@@ -628,7 +607,9 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
         clipBehavior: Clip.none,
         children: [
           PageView(
-            onPageChanged: (value1) {},
+            onPageChanged: (value1) {
+              homeCubit.updatePage(value1);
+            },
             children: List.generate(state.productDataEntity[10].contentData!.length, (index) {
               var sliderData = state.productDataEntity[10].contentData![index];
               return Container(
@@ -655,7 +636,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                         padding: const EdgeInsets.all(2),
                         child: CircleAvatar(
                           radius: 5,
-                          //backgroundColor: pagviewCubit1.state != index ? grey : white,
+                          backgroundColor: state.secondindex != index ? grey : white,
                         ),
                       )),
             ),
@@ -666,11 +647,11 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   }
 
   ///referFriend
-  Widget referFriend({required String text, required HomeLoadedState state}) {
+  Widget referFriend({required HomeLoadedState state}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: "${state.productDataEntity[8].title}", color: black, size: 20),
         Container(
           height: 170.h,
           width: double.infinity,
@@ -688,15 +669,11 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   }
 
 //////THIS OR THAT
-  Widget thisThat({
-    required double hight,
-    required String text,
-    required HomeLoadedState state,
-  }) {
+  Widget thisThat({required HomeLoadedState state}) {
     var count = List.generate(state.productDataEntity[11].contentData!.length, (index) {
       var thatdata = state.productDataEntity[11].contentData![index].mediaUrl.toString();
       return Container(
-        height: hight,
+        height: 160.h,
         width: double.infinity,
         margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
         decoration: BoxDecoration(
@@ -708,7 +685,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: "${state.productDataEntity[11].title}", color: black, size: 20),
         SizedBox(
           height: 20.h,
         ),
@@ -720,22 +697,18 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   }
 
   ///ExploreWidget
-  Widget exploreWidget({
-    required double hight,
-    required String text,
-    required HomeLoadedState state,
-  }) {
+  Widget exploreWidget({required HomeLoadedState state}) {
     var count = state.productDataEntity[15].contentData!.length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: "${state.productDataEntity[15].title}", color: black, size: 20),
         SizedBox(height: 5.h),
         Column(
           children: List.generate(count, (index) {
             var exploreData = NetworkImage(state.productDataEntity[15].contentData![index].mediaUrl.toString());
             return Container(
-              height: hight,
+              height: 180.h,
               width: double.infinity,
               margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
               decoration: BoxDecoration(
@@ -750,12 +723,12 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   }
 
   ///SkINCARE BASICCS
-  Widget skincareBasics({required String text, required HomeLoadedState state}) {
+  Widget skincareBasics({required HomeLoadedState state}) {
     var count = state.productDataEntity[12].contentData!.length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: '${state.productDataEntity[12].title}', color: black, size: 20),
         SizedBox(
           height: 7.h,
         ),
@@ -817,20 +790,21 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                   bestseButton(
                     tax: textItems(text: "Buy Now", color: white, size: 15),
                     onpress: () {
-                      // Navigator.push(
-                      //   context,
-                      //   pageNaviagation(
-                      //     screen: ProductDetial(
-                      //       productid: bestsellers.productJson!.image!.src.toString(),
-                      //       tital: bestsellers.productJson!.title.toString(),
-                      //       price: pricedata.price.toString().split(".")[0],
-                      //       discount: pricedata.compareAtPrice.toString(),
-                      //       status: bestsellers.productJson!.status.toString(),
-                      //       idno: bestsellers.productJson!.id,
-                      //       titalproduct: data.resbody!.sections![12].title,
-                      //     ),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        pageNaviagation(
+                          screen: ProductDetial(
+                            productid: bestsellers.productJson!.image!.src.toString(),
+                            tital: bestsellers.productJson!.title.toString(),
+                            price: pricedata.price.toString().split(".")[0],
+                            discount: pricedata.compareAtPrice.toString(),
+                            status: bestsellers.productJson!.status.toString(),
+                            idno: bestsellers.productJson!.id,
+                            titalproduct: state.productDataEntity[12].title,
+                              state: state,
+                          ),
+                        ),
+                      );
                     },
                   ),
                 ]),
@@ -843,12 +817,12 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   }
 
   ///Merch Station
-  Widget merchStation({required String text, required HomeLoadedState state}) {
+  Widget merchStation({required HomeLoadedState state}) {
     var count = state.productDataEntity[14].contentData!.length;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        textItems(text: text, color: black, size: 20),
+        textItems(text: '${state.productDataEntity[14].title}', color: black, size: 20),
         SizedBox(height: 7.h),
         SizedBox(
           height: 250.h,
@@ -904,19 +878,20 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                   SizedBox(height: 18.h),
                   bestseButton(
                     onpress: () {
-                      // Navigator.push(
-                      //     context,
-                      //     pageNaviagation(
-                      //       screen: ProductDetial(
-                      //         productid: bestsellers.productJson!.image!.src.toString(),
-                      //         tital: bestsellers.productJson!.title.toString(),
-                      //         price: pricedata.price.toString().split(".")[0],
-                      //         discount: pricedata.compareAtPrice.toString(),
-                      //         status: bestsellers.productJson!.status.toString(),
-                      //         idno: bestsellers.productJson!.id,
-                      //         titalproduct: data.resbody!.sections![14].title,
-                      //       ),
-                      //     ));
+                      Navigator.push(
+                          context,
+                          pageNaviagation(
+                            screen: ProductDetial(
+                              productid: bestsellers.productJson!.image!.src.toString(),
+                              tital: bestsellers.productJson!.title.toString(),
+                              price: pricedata.price.toString().split(".")[0],
+                              discount: pricedata.compareAtPrice.toString(),
+                              status: bestsellers.productJson!.status.toString(),
+                              idno: bestsellers.productJson!.id,
+                              titalproduct: state.productDataEntity[14].title,
+                                state: state,
+                            ),
+                          ));
                     },
                     tax: textItems(text: "Buy Now", color: white, size: 15),
                   ),

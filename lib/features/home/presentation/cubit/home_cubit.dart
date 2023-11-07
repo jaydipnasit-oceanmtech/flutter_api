@@ -27,8 +27,15 @@ class HomeCubit extends Cubit<HomeState> {
     HomeLoadedState homeLoadedState = state as HomeLoadedState;
     emit(homeLoadedState.copyWith(index: index));
   }
-   void updatePage(int index) {
-    //emit(data);
+
+  void updatePage(int secondindex) {
+    HomeLoadedState homeLoadedState = state as HomeLoadedState;
+    emit(homeLoadedState.copyWith(secondindex: secondindex));
+  }
+
+  void colorChange(int colorindex) {
+    HomeLoadedState homeLoadedState = state as HomeLoadedState;
+    emit(homeLoadedState.copyWith(colorindex: colorindex));
   }
 
   // final picker = ImagePicker();
