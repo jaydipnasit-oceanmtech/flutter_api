@@ -21,10 +21,12 @@ class ProductDataSourceImpl extends ProductDataSource {
   @override
   Future<Either<AppError, List<ProductDataEntity>>> getProductData({required NoParams noParams}) async {
     try {
-      final productData = await client.get('https://dummyjson.com/products', header: ApiConstatnts().headers);
+      final productData = await client.get('https://praticle-service.s3.ap-south-1.amazonaws.com/sugar_home.json',
+          header: ApiConstatnts().headers);
       final parseData = ProductModel.fromJson(productData);
-      if (parseData.products.isNotEmpty) {
-        return Right(parseData.products);
+      if (parseData.resbody!.sections!.isNotEmpty) {
+       
+        return Right(parseData.resbody!.sections!);
       } else {
         return Left(AppError(errorType: AppErrorType.api, errorMessage: parseData.toString()));
       }
@@ -53,6 +55,7 @@ class ProductDataSourceImpl extends ProductDataSource {
         ),
       );
     } catch (exception) {
+     
       // saveError(params: ErrorParams(errType: ErrorLogType.app, url: paramsUrl, errMsg: exception.toString()));
       return const Left(
         AppError(errorType: AppErrorType.app, errorMessage: "Something went wrong, try again!\n(Error:105)"),

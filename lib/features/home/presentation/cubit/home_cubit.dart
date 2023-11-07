@@ -11,9 +11,9 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final GetProductData getProductData;
-  HomeCubit({required this.getProductData}) : super(const HomeLoadedState(productDataEntity: []));
+  HomeCubit({required this.getProductData}) : super(const HomeLordingState());
 
- Future<void> loadInitialData() async {
+  Future<void> loadInitialData() async {
     Either<AppError, List<ProductDataEntity>> response = await getProductData(NoParams());
     response.fold(
       (error) {},
@@ -21,6 +21,14 @@ class HomeCubit extends Cubit<HomeState> {
         emit(HomeLoadedState(productDataEntity: data));
       },
     );
+  }
+
+  void updatePageIndex(int index) {
+    HomeLoadedState homeLoadedState = state as HomeLoadedState;
+    emit(homeLoadedState.copyWith(index: index));
+  }
+   void updatePage(int index) {
+    //emit(data);
   }
 
   // final picker = ImagePicker();
@@ -36,4 +44,21 @@ class HomeCubit extends Cubit<HomeState> {
   //     }
   //   }
   // }
+
+  ///calling state
+
+// var loadedState = getSate();
+  // if (loadedState != null) {
+  //   emit(loadedState.copyWith(productDataEntity: data));
+  // }
+  // HomeLoadedState? getSate() {
+  //   HomeLoadedState? homeLoadedState;
+  //   if (state is HomeLoadedState) {
+  //     homeLoadedState = state as HomeLoadedState;
+  //   }
+  //   return homeLoadedState;
+  // }
+
+  // HomeLoadedState homeLoadedState = state as HomeLoadedState;
+  // emit(homeLoadedState.copyWith(index: index));
 }

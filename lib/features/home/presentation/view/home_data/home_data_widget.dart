@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_api/%20common/constans/colors.dart';
 import 'package:flutter_application_api/di/get_it.dart';
 import 'package:flutter_application_api/features/home/presentation/cubit/home_cubit.dart';
 import 'package:flutter_application_api/features/home/presentation/view/home_data/home_data_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // TextEditingController email = TextEditingController();
 // TextEditingController password = TextEditingController();
@@ -14,35 +17,974 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
   void initState() {
     homeCubit = getItInstance<HomeCubit>();
     homeCubit.loadInitialData();
+
     super.initState();
   }
 
   @override
-  void deactivate() {
+  void dispose() {
     homeCubit.close();
-    super.deactivate();
+    super.dispose();
   }
 
-  Widget commonTile({required HomeLoadedState state, required int index}) {
-    var productDetails = state.productDataEntity;
+  Widget appIcon({required IconData icons}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Icon(
+        icons,
+        size: 22.h,
+        color: white,
+      ),
+    );
+  }
 
-   
-    return ListTile(
-      onTap: () {},
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(productDetails[index].images[0]),
+  ///TextFiled
+  Widget textFiledSugar() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+      child: TextFormField(
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.search),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.r),
+            borderSide: const BorderSide(color: Colors.black),
+          ),
+          hintText: "Foundati",
+          contentPadding: const EdgeInsets.all(1),
+          hintStyle: GoogleFonts.inter(
+            color: black,
+            fontSize: 15.sp,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
-      title: Text(productDetails[index].title),
-      subtitle: Text(
-        productDetails[index].category,
-        maxLines: 3,
-        overflow: TextOverflow.ellipsis,
+    );
+  }
+
+  ///catagoriList
+  Widget sugarList({required HomeLoadedState state}) {
+    print("dcfdcdccddcdcdc");
+    return SizedBox(
+      height: 110.h,
+      child: ListView.builder(
+        itemCount: state.productDataEntity[0].contentData!.length,
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (context, index) {
+          final collectionData = state.productDataEntity[0].contentData![index];
+          return Column(
+            children: [
+              Container(
+                height: 70.h,
+                width: 70.w,
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                    image: DecorationImage(image: NetworkImage(collectionData.mediaUrl.toString()), fit: BoxFit.cover)),
+              ),
+              Text(
+                collectionData.mediaText.toString(),
+                style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600),
+              )
+            ],
+          );
+        },
       ),
-      trailing: Text('${productDetails[index].price} ${productDetails[index].stock}'),
+    );
+  }
+
+  //sliderpage
+  Widget sliderItems({
+    required HomeLoadedState state,
+  }) {
+    return SizedBox(
+        height: 240.h,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            PageView(
+              onPageChanged: (value) {
+                homeCubit.updatePageIndex(value);
+              },
+              children: List.generate(state.productDataEntity[1].contentData!.length, (index) {
+                var sliderData = state.productDataEntity[1].contentData![index];
+                return Container(
+                  height: 240.h,
+                  width: 340.w,
+                  margin: EdgeInsets.symmetric(horizontal: 10.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    image: DecorationImage(image: NetworkImage(sliderData.mediaUrl.toString()), fit: BoxFit.fill),
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                );
+              }),
+            ),
+            Positioned(
+              bottom: 20.h,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                    state.productDataEntity[1].contentData!.length,
+                    (index) => Padding(
+                          padding: const EdgeInsets.all(2),
+                          child: InkWell(
+                            onTap: () {},
+                            child: CircleAvatar(radius: 5, backgroundColor: state.index == index ? white : grey),
+                          ),
+                        )),
+              ),
+            )
+          ],
+        ));
+  }
+
+//   ///Bestsellers
+  Widget bestsellers({required String text, required HomeLoadedState state}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(height: 2.h),
+        Container(
+            height: 320.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                image: DecorationImage(
+                    image: NetworkImage(
+                      state.productDataEntity[2].backgroundImg.toString(),
+                    ),
+                    fit: BoxFit.cover)),
+            child: ListView.builder(
+              itemCount: state.productDataEntity[2].contentData!.length,
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                var bestsellers = state.productDataEntity[2].contentData![index];
+                ;
+                var pricedata = bestsellers.productJson!.variants![0];
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 25.h),
+                  child: Container(
+                    height: 210.h,
+                    width: 145.w,
+                    margin: EdgeInsets.symmetric(horizontal: 10.w),
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.r)),
+                    child: Column(children: [
+                      Container(
+                        height: 130.h,
+                        width: 145.w,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(10.r), bottom: Radius.circular(5.r)),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                bestsellers.productJson!.image!.src.toString(),
+                              ),
+                            )),
+                      ),
+                      SizedBox(height: 2.h),
+                      Text(bestsellers.productJson!.title.toString(),
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.poppins(color: black, fontWeight: FontWeight.w500, fontSize: 12.sp)),
+                      SizedBox(height: 20.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          commonText(
+                              text: pricedata.compareAtPrice != null
+                                  ? "₹${pricedata.compareAtPrice.toString().split(".")[0]}"
+                                  : "993",
+                              color: grey),
+                          SizedBox(width: 5.w),
+                          commonText(text: "₹${pricedata.price.toString().split(".")[0]}", color: black),
+                        ],
+                      ),
+                      SizedBox(height: 15.h),
+                      bestseButton(
+                        tax: textItems(text: "Buy Now", color: white, size: 15),
+                        onpress: () {
+                          // Navigator.push(
+                          //   context,
+                          //   pageNaviagation(
+                          //       screen: ProductDetial(
+                          //     productid: bestsellers.productJson!.image!.src.toString(),
+                          //     tital: bestsellers.productJson!.title.toString(),
+                          //     price: pricedata.price.toString().split(".")[0],
+                          //     discount: pricedata.compareAtPrice.toString(),
+                          //     status: bestsellers.productJson!.status.toString(),
+                          //     idno: bestsellers.productJson!.id,
+                          //     titalproduct: data.resbody!.sections![2].title,
+                          //   )),
+                          // );
+                        },
+                      ),
+                    ]),
+                  ),
+                );
+              },
+            )),
+      ],
+    );
+  }
+
+  ///HOT DEALS Widgets
+  Widget hotDeals({required String text, required HomeLoadedState state}) {
+    var dataCount = state.productDataEntity[3].contentData!.length;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(height: 15.h),
+        SizedBox(
+          height: 220.h,
+          child: ListView.builder(
+            itemCount: dataCount,
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              final hotDeals = state.productDataEntity[3].contentData![index];
+              return Container(
+                height: 200.h,
+                width: 340.w,
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(image: NetworkImage(hotDeals.mediaUrl.toString()), fit: BoxFit.fill),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(15.r),
+                    bottomRight: Radius.circular(15.r),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  ///TopPick Widgets
+  Widget topPicks({
+    required String text,
+    required double bottomL,
+    required double bottomR,
+    // ignore: non_constant_identifier_names
+    required double TopR,
+    // ignore: non_constant_identifier_names
+    required double TopL,
+    required HomeLoadedState state,
+  }) {
+    var dataCount = state.productDataEntity[6].contentData!.length;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(height: 15.h),
+        SizedBox(
+          height: 220.h,
+          child: ListView.builder(
+            itemCount: dataCount,
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              final hotDeals = state.productDataEntity[6].contentData![index];
+              return Container(
+                height: 200.h,
+                width: 340.w,
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  image: DecorationImage(image: NetworkImage(hotDeals.mediaUrl.toString()), fit: BoxFit.fill),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(bottomL),
+                    bottomRight: Radius.circular(bottomR),
+                    topLeft: Radius.circular(TopL),
+                    topRight: Radius.circular(TopR),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+//SUGAR BEAUTY BLOG Widgets
+  Widget sugarWidgets({
+    required String text,
+    required double bottomL,
+    required double bottomR,
+    // ignore: non_constant_identifier_names
+    required double TopR,
+    // ignore: non_constant_identifier_names
+    required double TopL,
+    required HomeLoadedState state,
+  }) {
+    var dataCount = state.productDataEntity[13].contentData!.length;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(height: 15.h),
+        SizedBox(
+          height: 220.h,
+          child: ListView.builder(
+            itemCount: dataCount,
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              final hotDeals = state.productDataEntity[13].contentData![index];
+              return Container(
+                height: 200.h,
+                width: 340.w,
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  image: DecorationImage(image: NetworkImage(hotDeals.mediaUrl.toString()), fit: BoxFit.fill),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(bottomL),
+                    bottomRight: Radius.circular(bottomR),
+                    topLeft: Radius.circular(TopL),
+                    topRight: Radius.circular(TopR),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+//   ///JUSTIN && TRY BEFORE Widgets
+  Widget justIn({required String text, required HomeLoadedState state}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(height: 7.h),
+        SizedBox(
+          height: 280.h,
+          child: ListView.builder(
+            itemCount: state.productDataEntity[4].contentData!.length,
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              var bestsellers = state.productDataEntity[4].contentData![index];
+              var pricedata = bestsellers.productJson!.variants![0];
+              return Container(
+                height: 260.h,
+                width: 140.w,
+                margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [BoxShadow(blurRadius: 1.r, spreadRadius: 0, offset: (const Offset(0, 0)), color: grey)],
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: Column(children: [
+                  Container(
+                    height: 130.h,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(10.r), bottom: Radius.circular(5.r)),
+                        image: DecorationImage(
+                            image: NetworkImage(
+                              bestsellers.productJson!.image!.src.toString(),
+                            ),
+                            fit: BoxFit.fill)),
+                  ),
+                  SizedBox(height: 2.h),
+                  commonText(text: bestsellers.productJson!.title.toString(), color: black, align: TextAlign.center),
+                  SizedBox(height: 20.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      commonText(
+                          text: pricedata.compareAtPrice != null
+                              ? "₹${pricedata.compareAtPrice.toString().split(".")[0]}"
+                              : "₹999",
+                          color: grey),
+                      SizedBox(width: 10.w),
+                      commonText(text: "₹${pricedata.price.toString().split(".")[0]}", color: black)
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  bestseButton(
+                    tax: textItems(text: "Buy Now", color: white, size: 15),
+                    onpress: () {
+                      // Navigator.push(
+                      //     context,
+                      //     pageNaviagation(
+                      //       screen: ProductDetial(
+                      //         productid: bestsellers.productJson!.image!.src.toString(),
+                      //         tital: bestsellers.productJson!.title.toString(),
+                      //         price: pricedata.price.toString().split(".")[0],
+                      //         discount: pricedata.compareAtPrice.toString(),
+                      //         status: bestsellers.productJson!.status.toString(),
+                      //         idno: bestsellers.productJson!.id,
+                      //         titalproduct: data.resbody!.sections![4].title,
+                      //       ),
+                      //     ));
+                    },
+                  ),
+                ]),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  ///GiftingWidgetWidgets
+  Widget giftingWidget({required String text, required HomeLoadedState state}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(height: 7.h),
+        SizedBox(
+          height: 280.h,
+          child: ListView.builder(
+            itemCount: state.productDataEntity[7].contentData!.length,
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              var bestsellers = state.productDataEntity[7].contentData![index];
+              var pricedata = bestsellers.productJson!.variants![0];
+              return Container(
+                height: 260.h,
+                width: 140.w,
+                margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(blurRadius: 1.r, spreadRadius: 1, offset: (const Offset(0, 0)), color: grey),
+                    ],
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 130.h,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(10.r), bottom: Radius.circular(5.r)),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              bestsellers.productJson!.image!.src.toString(),
+                            ),
+                            fit: BoxFit.fill,
+                          )),
+                    ),
+                    SizedBox(height: 2.h),
+                    Text(bestsellers.productJson!.title.toString(),
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(color: black, fontWeight: FontWeight.w500, fontSize: 12.sp)),
+                    SizedBox(height: 20.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        commonText(text: "₹${pricedata.compareAtPrice.toString().split(".")[0]}", color: grey),
+                        SizedBox(width: 10.w),
+                        commonText(text: "₹${pricedata.price.toString().split(".")[0]}", color: black),
+                      ],
+                    ),
+                    const Spacer(),
+                    bestseButton(
+                      onpress: () {
+                        // Navigator.push(
+                        //     context,
+                        //     pageNaviagation(
+                        //       screen: ProductDetial(
+                        //         productid: bestsellers.productJson!.image!.src.toString(),
+                        //         tital: bestsellers.productJson!.title.toString(),
+                        //         price: pricedata.price.toString().split(".")[0],
+                        //         discount: pricedata.compareAtPrice.toString(),
+                        //         status: bestsellers.productJson!.status.toString(),
+                        //         idno: bestsellers.productJson!.id,
+                        //         titalproduct: data.resbody!.sections![7].title,
+                        //       ),
+                        //     ));
+                      },
+                      tax: textItems(text: "Buy Now", color: white, size: 15),
+                    ),
+                    SizedBox(height: 8.h),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  ///SuperSavers Widgets
+  Widget superSavers({required String text, required HomeLoadedState state}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(height: 2.h),
+        Container(
+            height: 320.h,
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                image: DecorationImage(
+                    image: NetworkImage(
+                      state.productDataEntity[9].backgroundImg.toString(),
+                    ),
+                    fit: BoxFit.fill)),
+            child: ListView.builder(
+              itemCount: state.productDataEntity[9].contentData!.length,
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                var bestsellers = state.productDataEntity[9].contentData![index];
+                var pricedata = bestsellers.productJson!.variants![0];
+                return Padding(
+                  padding: EdgeInsets.only(top: 18.h, bottom: 25.h),
+                  child: Container(
+                    height: 210.h,
+                    width: 145.w,
+                    margin: EdgeInsets.symmetric(horizontal: 10.w),
+                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.r)),
+                    child: Column(children: [
+                      Container(
+                        height: 130.h,
+                        width: 145.w,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.vertical(top: Radius.circular(10.r), bottom: Radius.circular(5.r)),
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                  bestsellers.productJson!.image!.src.toString(),
+                                ),
+                                fit: BoxFit.fill)),
+                      ),
+                      SizedBox(height: 2.h),
+                      commonText(
+                          text: bestsellers.productJson!.title.toString(),
+                          color: black,
+                          line: 2,
+                          align: TextAlign.center),
+                      SizedBox(height: 20.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          commonText(text: "₹${pricedata.compareAtPrice.toString().split(".")[0]}", color: grey),
+                          SizedBox(width: 10.w),
+                          commonText(text: "₹${pricedata.price.toString().split(".")[0]}", color: black),
+                        ],
+                      ),
+                      const Spacer(),
+                      bestseButton(
+                        tax: textItems(text: "Buy Now", color: white, size: 15),
+                        onpress: () {
+                          // Navigator.push(
+                          //     context,
+                          //     pageNaviagation(
+                          //       screen: ProductDetial(
+                          //         productid: bestsellers.productJson!.image!.src.toString(),
+                          //         tital: bestsellers.productJson!.title.toString(),
+                          //         price: pricedata.price.toString().split(".")[0],
+                          //         discount: pricedata.compareAtPrice.toString(),
+                          //         status: bestsellers.productJson!.status.toString(),
+                          //         idno: bestsellers.productJson!.id,
+                          //         titalproduct: data.resbody!.sections![9].title,
+                          //       ),
+                          //     ));
+                        },
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                    ]),
+                  ),
+                );
+              },
+            )),
+      ],
+    );
+  }
+
+  ///NewlyWidget
+  Widget newlyWidget({required HomeLoadedState state}) {
+    return SizedBox(
+      height: 250.h,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          PageView(
+            onPageChanged: (value1) {},
+            children: List.generate(state.productDataEntity[10].contentData!.length, (index) {
+              var sliderData = state.productDataEntity[10].contentData![index];
+              return Container(
+                height: 250.h,
+                width: 340.w,
+                margin: EdgeInsets.symmetric(horizontal: 10.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  image: DecorationImage(image: NetworkImage(sliderData.mediaUrl.toString()), fit: BoxFit.fill),
+                  borderRadius: BorderRadius.circular(15.r),
+                ),
+              );
+            }),
+          ),
+          Positioned(
+            bottom: 20.h,
+            left: 0,
+            right: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                  state.productDataEntity[10].contentData!.length,
+                  (index) => Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: CircleAvatar(
+                          radius: 5,
+                          //backgroundColor: pagviewCubit1.state != index ? grey : white,
+                        ),
+                      )),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  ///referFriend
+  Widget referFriend({required String text, required HomeLoadedState state}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        Container(
+          height: 170.h,
+          width: double.infinity,
+          margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [BoxShadow(blurRadius: 1.r, spreadRadius: 0, offset: (const Offset(0, 0)), color: grey)],
+              image: DecorationImage(
+                  image: NetworkImage(state.productDataEntity[8].contentData![0].mediaUrl.toString()),
+                  fit: BoxFit.fill),
+              borderRadius: BorderRadius.circular(10.r)),
+        ),
+      ],
+    );
+  }
+
+//////THIS OR THAT
+  Widget thisThat({
+    required double hight,
+    required String text,
+    required HomeLoadedState state,
+  }) {
+    var count = List.generate(state.productDataEntity[11].contentData!.length, (index) {
+      var thatdata = state.productDataEntity[11].contentData![index].mediaUrl.toString();
+      return Container(
+        height: hight,
+        width: double.infinity,
+        margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+        decoration: BoxDecoration(
+            color: Colors.grey,
+            image: DecorationImage(image: NetworkImage(thatdata), fit: BoxFit.fill),
+            borderRadius: BorderRadius.circular(10.r)),
+      );
+    });
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(
+          height: 20.h,
+        ),
+        Column(
+          children: count,
+        )
+      ],
+    );
+  }
+
+  ///ExploreWidget
+  Widget exploreWidget({
+    required double hight,
+    required String text,
+    required HomeLoadedState state,
+  }) {
+    var count = state.productDataEntity[15].contentData!.length;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(height: 5.h),
+        Column(
+          children: List.generate(count, (index) {
+            var exploreData = NetworkImage(state.productDataEntity[15].contentData![index].mediaUrl.toString());
+            return Container(
+              height: hight,
+              width: double.infinity,
+              margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+              decoration: BoxDecoration(
+                  color: Colors.grey,
+                  image: DecorationImage(image: exploreData, fit: BoxFit.fill),
+                  borderRadius: BorderRadius.circular(10.r)),
+            );
+          }),
+        )
+      ],
+    );
+  }
+
+  ///SkINCARE BASICCS
+  Widget skincareBasics({required String text, required HomeLoadedState state}) {
+    var count = state.productDataEntity[12].contentData!.length;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(
+          height: 7.h,
+        ),
+        SizedBox(
+          height: 250.h,
+          width: double.infinity,
+          child: ListView.builder(
+            itemCount: count,
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              var bestsellers = state.productDataEntity[12].contentData![index];
+              var pricedata = bestsellers.productJson!.variants![0];
+              return Container(
+                height: 100.h,
+                width: 140.w,
+                margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(20.r)),
+                ),
+                child: Column(children: [
+                  Container(
+                    height: 100.h,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(10.r), bottom: Radius.circular(5.r)),
+                        image: DecorationImage(
+                            image: NetworkImage(
+                              bestsellers.productJson!.image!.src.toString(),
+                            ),
+                            fit: BoxFit.fill)),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Text(bestsellers.productJson!.title.toString(),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      style: GoogleFonts.poppins(color: black, fontWeight: FontWeight.w500, fontSize: 13.sp)),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      commonText(
+                          text: pricedata.compareAtPrice != null
+                              ? "₹${pricedata.compareAtPrice.toString().split(".")[0]}"
+                              : "890",
+                          color: grey),
+                      SizedBox(width: 10.w),
+                      commonText(text: "₹${pricedata.price.toString().split(".")[0]}", color: black)
+                    ],
+                  ),
+                  SizedBox(
+                    height: 15.h,
+                  ),
+                  bestseButton(
+                    tax: textItems(text: "Buy Now", color: white, size: 15),
+                    onpress: () {
+                      // Navigator.push(
+                      //   context,
+                      //   pageNaviagation(
+                      //     screen: ProductDetial(
+                      //       productid: bestsellers.productJson!.image!.src.toString(),
+                      //       tital: bestsellers.productJson!.title.toString(),
+                      //       price: pricedata.price.toString().split(".")[0],
+                      //       discount: pricedata.compareAtPrice.toString(),
+                      //       status: bestsellers.productJson!.status.toString(),
+                      //       idno: bestsellers.productJson!.id,
+                      //       titalproduct: data.resbody!.sections![12].title,
+                      //     ),
+                      //   ),
+                      // );
+                    },
+                  ),
+                ]),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  ///Merch Station
+  Widget merchStation({required String text, required HomeLoadedState state}) {
+    var count = state.productDataEntity[14].contentData!.length;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        textItems(text: text, color: black, size: 20),
+        SizedBox(height: 7.h),
+        SizedBox(
+          height: 250.h,
+          width: double.infinity,
+          child: ListView.builder(
+            itemCount: count,
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              var bestsellers = state.productDataEntity[14].contentData![index];
+              var pricedata = bestsellers.productJson!.variants![0];
+              return Container(
+                height: 100.h,
+                width: 140.w,
+                margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.vertical(bottom: Radius.circular(20.r)),
+                ),
+                child: Column(children: [
+                  Container(
+                    height: 100.h,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(10.r), bottom: Radius.circular(5.r)),
+                        image: DecorationImage(
+                            image: NetworkImage(
+                              bestsellers.productJson!.image!.src.toString(),
+                            ),
+                            fit: BoxFit.fill)),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  commonText(
+                      text: bestsellers.productJson!.title.toString(), align: TextAlign.center, line: 2, color: black),
+                  SizedBox(height: 20.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      commonText(
+                          text: pricedata.compareAtPrice != null
+                              ? "₹${pricedata.compareAtPrice.toString().split(".")[0]}"
+                              : "₹899",
+                          color: grey),
+                      SizedBox(width: 10.w),
+                      commonText(
+                        text: "₹${pricedata.price.toString().split(".")[0]}",
+                        color: black,
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 18.h),
+                  bestseButton(
+                    onpress: () {
+                      // Navigator.push(
+                      //     context,
+                      //     pageNaviagation(
+                      //       screen: ProductDetial(
+                      //         productid: bestsellers.productJson!.image!.src.toString(),
+                      //         tital: bestsellers.productJson!.title.toString(),
+                      //         price: pricedata.price.toString().split(".")[0],
+                      //         discount: pricedata.compareAtPrice.toString(),
+                      //         status: bestsellers.productJson!.status.toString(),
+                      //         idno: bestsellers.productJson!.id,
+                      //         titalproduct: data.resbody!.sections![14].title,
+                      //       ),
+                      //     ));
+                    },
+                    tax: textItems(text: "Buy Now", color: white, size: 15),
+                  ),
+                ]),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  ///CommonTextItems
+  Widget textItems({required Color color, required int size, required String text}) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      child: Text(
+        text,
+        style: GoogleFonts.poppins(color: color, fontSize: size.sp, fontWeight: FontWeight.w700),
+      ),
+    );
+  }
+
+  ///CommonText
+  Widget commonText({required String text, required Color color, TextAlign? align, int? line}) {
+    return Text(text,
+        textAlign: align,
+        maxLines: line,
+        style: GoogleFonts.poppins(
+          color: color,
+          fontWeight: FontWeight.w600,
+          fontSize: 12.sp,
+        ));
+  }
+
+  Widget bestseButton({required Widget tax, required VoidCallback onpress}) {
+    return MaterialButton(
+      onPressed: onpress,
+      height: 33.h,
+      minWidth: 125.w,
+      color: black,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.r)),
+      child: tax,
+    );
+  }
+
+  ///Navigations Animastions
+  Route pageNaviagation({required Widget screen}) {
+    return PageRouteBuilder(
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return ScaleTransition(
+          alignment: Alignment.center,
+          scale: Tween<double>(begin: 2, end: 1).animate(
+            CurvedAnimation(
+              parent: animation,
+              curve: Curves.slowMiddle,
+            ),
+          ),
+          child: child,
+        );
+      },
+      transitionDuration: const Duration(seconds: 1),
+      pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+        return screen;
+      },
     );
   }
 }
-
 
 
 

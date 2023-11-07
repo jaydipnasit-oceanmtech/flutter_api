@@ -1,45 +1,39 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_application_api/features/home/data/models/home_data_model.dart';
 
+// ignore: must_be_immutable
 class ProductDataEntity extends Equatable {
-  final int id;
-  final String title;
-  final String description;
-  final int price;
-  final double discountPercentage;
-  final double rating;
-  final int stock;
-  final String brand;
-  final String category;
-  final String thumbnail;
-  final List<String> images;
-  const ProductDataEntity({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.price,
-    required this.discountPercentage,
-    required this.rating,
-    required this.stock,
-    required this.brand,
-    required this.category,
-    required this.thumbnail,
-    required this.images,
+  int? id;
+  String? title;
+  int? sequence;
+  int? layoutType;
+  int? isTitleEnabled;
+  String? backgroundImg;
+  String? backgroundColor;
+  String? text;
+  int? contentType;
+  List<ContentDatum>? contentData;
+
+   ProductDataEntity({
+   required this.id,
+   required this.title,
+   required this.sequence,
+   required this.layoutType,
+   required this.isTitleEnabled,
+   required this.backgroundImg,
+   required this.backgroundColor,
+   required this.text,
+   required this.contentType,
+   required this.contentData,
   });
 
   @override
-  List<Object> get props {
-    return [
-      id,
-      title,
-      description,
-      price,
-      discountPercentage,
-      rating,
-      stock,
-      brand,
-      category,
-      thumbnail,
-      images,
-    ];
-  }
+  List<Object?> get props => [
+        id,
+        title,
+        sequence,
+        layoutType,
+        backgroundColor,
+        contentType,
+      ];
 }

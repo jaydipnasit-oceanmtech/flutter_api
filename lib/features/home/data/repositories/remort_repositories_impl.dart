@@ -13,7 +13,7 @@ class ProductDataRepositoriesImpl extends ProductRemoteRepositories {
   Future<Either<AppError, List<ProductDataEntity>>> getProductData({required NoParams noParams}) async {
     try {
       final result = await productDataSources.getProductData(noParams: noParams);
-      print(result);
+
       return result;
     } on Exception {
       throw Exception('Something goes wrong.');
