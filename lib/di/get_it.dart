@@ -3,6 +3,7 @@ import 'package:flutter_application_api/features/home/data/datasources/product_d
 import 'package:flutter_application_api/features/home/data/repositories/remort_repositories_impl.dart';
 import 'package:flutter_application_api/features/home/domain/repositories/home_remort_repositories.dart';
 import 'package:flutter_application_api/features/home/domain/usecases/get_product_data.dart';
+import 'package:flutter_application_api/features/home/presentation/cubit/counter_cubit/counter_cubit_cubit.dart';
 import 'package:flutter_application_api/features/home/presentation/cubit/home_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
@@ -24,5 +25,8 @@ Future init() async {
   getItInstance.registerLazySingleton<GetProductData>(() => GetProductData(userRemoteRepositories: getItInstance()));
 
   //Cubit Dependency
-  getItInstance.registerFactory<HomeCubit>(() => HomeCubit(getProductData: getItInstance()));
+  getItInstance.registerFactory<CounterCubit>(() => CounterCubit());
+  getItInstance.registerFactory<HomeCubit>(() => HomeCubit(
+        getProductData: getItInstance(),
+      ));
 }

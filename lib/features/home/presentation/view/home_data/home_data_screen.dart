@@ -16,6 +16,7 @@ class HomeDataScrene extends StatefulWidget {
 class _HomeDataScreneState extends HomeDataWigets {
   @override
   Widget build(BuildContext context) {
+    FocusScope.of(context).unfocus();
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
@@ -64,7 +65,9 @@ class _HomeDataScreneState extends HomeDataWigets {
                   sizedbox(),
                   justIn(state: state),
                   sizedbox(),
-                  giftingWidget(state: state),
+                  giftingWidget(
+                    state: state,
+                  ),
                   sizedbox(),
                   referFriend(state: state),
                   sizedbox(),

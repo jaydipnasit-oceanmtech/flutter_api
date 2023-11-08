@@ -11,7 +11,8 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final GetProductData getProductData;
-  HomeCubit({required this.getProductData}) : super(const HomeLordingState());
+
+  HomeCubit({ required this.getProductData}) : super(const HomeLordingState());
 
   Future<void> loadInitialData() async {
     Either<AppError, List<ProductDataEntity>> response = await getProductData(NoParams());
@@ -29,13 +30,9 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void updatePage(int secondindex) {
+    emit(HomeLordingState());
     HomeLoadedState homeLoadedState = state as HomeLoadedState;
     emit(homeLoadedState.copyWith(secondindex: secondindex));
-  }
-
-  void colorChange(int colorindex) {
-    HomeLoadedState homeLoadedState = state as HomeLoadedState;
-    emit(homeLoadedState.copyWith(colorindex: colorindex));
   }
 
   // final picker = ImagePicker();

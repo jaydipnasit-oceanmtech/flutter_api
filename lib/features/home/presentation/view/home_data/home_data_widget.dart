@@ -24,7 +24,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
 
   @override
   void dispose() {
-    homeCubit.close();
+    // homeCubit.close();
     super.dispose();
   }
 
@@ -165,7 +165,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 var bestsellers = state.productDataEntity[2].contentData![index];
-                ;
+
                 var pricedata = bestsellers.productJson!.variants![0];
                 return Padding(
                   padding: EdgeInsets.symmetric(vertical: 25.h),
@@ -221,7 +221,6 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                               idno: bestsellers.productJson!.id,
                               titalproduct: state.productDataEntity[2].title,
                               state: state,
-                             
                             )),
                           );
                         },
@@ -374,6 +373,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                             image: NetworkImage(
                               bestsellers.productJson!.image!.src.toString(),
                             ),
+                            onError: (exception, stackTrace) {},
                             fit: BoxFit.fill)),
                   ),
                   SizedBox(height: 2.h),
@@ -408,7 +408,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                               status: bestsellers.productJson!.status.toString(),
                               idno: bestsellers.productJson!.id,
                               titalproduct: state.productDataEntity[4].title,
-                                state: state,
+                              state: state,
                             ),
                           ));
                     },
@@ -445,7 +445,12 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
-                      BoxShadow(blurRadius: 1.r, spreadRadius: 1, offset: (const Offset(0, 0)), color: grey),
+                      BoxShadow(
+                        blurRadius: 1.r,
+                        spreadRadius: 1,
+                        offset: (const Offset(0, 0)),
+                        color: grey,
+                      ),
                     ],
                     borderRadius: BorderRadius.circular(10.r)),
                 child: Column(
@@ -460,6 +465,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                             image: NetworkImage(
                               bestsellers.productJson!.image!.src.toString(),
                             ),
+                            onError: (exception, stackTrace) {},
                             fit: BoxFit.fill,
                           )),
                     ),
@@ -490,7 +496,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                                 status: bestsellers.productJson!.status.toString(),
                                 idno: bestsellers.productJson!.id,
                                 titalproduct: state.productDataEntity[7].title,
-                                  state: state,
+                                state: state,
                               ),
                             ));
                       },
@@ -582,7 +588,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                                   status: bestsellers.productJson!.status.toString(),
                                   idno: bestsellers.productJson!.id,
                                   titalproduct: state.productDataEntity[9].title,
-                                    state: state,
+                                  state: state,
                                 ),
                               ));
                         },
@@ -733,7 +739,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
           height: 7.h,
         ),
         SizedBox(
-          height: 250.h,
+          height: 260.h,
           width: double.infinity,
           child: ListView.builder(
             itemCount: count,
@@ -801,7 +807,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                             status: bestsellers.productJson!.status.toString(),
                             idno: bestsellers.productJson!.id,
                             titalproduct: state.productDataEntity[12].title,
-                              state: state,
+                            state: state,
                           ),
                         ),
                       );
@@ -825,7 +831,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
         textItems(text: '${state.productDataEntity[14].title}', color: black, size: 20),
         SizedBox(height: 7.h),
         SizedBox(
-          height: 250.h,
+          height: 260.h,
           width: double.infinity,
           child: ListView.builder(
             itemCount: count,
@@ -889,7 +895,7 @@ abstract class HomeDataWigets extends State<HomeDataScrene> {
                               status: bestsellers.productJson!.status.toString(),
                               idno: bestsellers.productJson!.id,
                               titalproduct: state.productDataEntity[14].title,
-                                state: state,
+                              state: state,
                             ),
                           ));
                     },

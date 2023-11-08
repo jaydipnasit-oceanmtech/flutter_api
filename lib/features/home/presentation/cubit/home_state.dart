@@ -24,19 +24,28 @@ class HomeLordingState extends HomeState {
 class HomeLoadedState extends HomeState {
   final int? index;
   final int? secondindex;
-  final int? colorindex;
+
   final List<ProductDataEntity> productDataEntity;
-  const HomeLoadedState({required this.productDataEntity, this.index, this.secondindex,this.colorindex});
-  HomeLoadedState copyWith({List<ProductDataEntity>? productDataEntity, int? index, int? secondindex,int ? colorindex}) {
+  HomeLoadedState({
+    required this.productDataEntity,
+    this.index,
+    this.secondindex,
+  });
+  HomeLoadedState copyWith(
+      {List<ProductDataEntity>? productDataEntity, int? index, int? secondindex, int? colorindex}) {
+    print("+++++++++++++++++++$colorindex");
     return HomeLoadedState(
         productDataEntity: productDataEntity ?? this.productDataEntity,
         index: index ?? this.index,
-        colorindex: colorindex??this.colorindex,
         secondindex: secondindex ?? this.secondindex);
   }
 
   @override
-  List<Object?> get props => [productDataEntity, index, secondindex,colorindex];
+  List<Object?> get props => [
+        productDataEntity,
+        index,
+        secondindex,
+      ];
 }
 
 class HomeErrorState extends HomeState {

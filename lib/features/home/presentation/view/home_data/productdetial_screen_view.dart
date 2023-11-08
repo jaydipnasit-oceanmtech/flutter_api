@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_api/%20common/constans/colors.dart';
 import 'package:flutter_application_api/di/get_it.dart';
-import 'package:flutter_application_api/features/home/presentation/cubit/home_cubit.dart';
+import 'package:flutter_application_api/features/home/presentation/cubit/counter_cubit/counter_cubit_cubit.dart';
 import 'package:flutter_application_api/features/home/presentation/view/home_data/productdetial_Screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
 abstract class ProductDetialView extends State<ProductDetial> {
-  late HomeCubit homeCubit;
+  late CounterCubit counterCubit;
   @override
   void initState() {
-    homeCubit = getItInstance<HomeCubit>();
-    homeCubit.loadInitialData();
+    counterCubit = getItInstance<CounterCubit>();
 
     super.initState();
   }
 
   @override
   void dispose() {
-    homeCubit.close();
+    counterCubit.close();
     super.dispose();
   }
 
@@ -66,7 +65,7 @@ abstract class ProductDetialView extends State<ProductDetial> {
     Colors.yellow,
   ];
 
-  Widget colorselect({required HomeLoadedState state}) {
+  Widget colorselect() {
     return Row(
         children: List.generate(
             5,
@@ -74,14 +73,16 @@ abstract class ProductDetialView extends State<ProductDetial> {
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: InkWell(
                       onTap: () {
-                        homeCubit.colorChange(index);
+                        print("=================>$index");
+                        counterCubit.colorChange(index: index);
                       },
                       child: Container(
                         height: 30.h,
                         width: 30.h,
                         decoration: BoxDecoration(
                             color: color1[index],
-                            border: Border.all(color: state.colorindex==index? Colors.black : Colors.white, width: 2.w),
+                            border: Border.all(
+                                color: counterCubit.state == index ? Colors.black : Colors.white, width: 2.w),
                             shape: BoxShape.circle),
                       )),
                 )));
