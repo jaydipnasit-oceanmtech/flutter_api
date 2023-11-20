@@ -12,7 +12,31 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   final GetProductData getProductData;
   HomeCubit({required this.getProductData}) : super(const HomeLoadedState(productDataEntity: []));
+ // void addFamilyDetails() {
+ //    var loadedState = state as CreateNewLoadedState;
+ //    if (familyDetailData.every((element) => element.familyMemberName.text.isNotEmpty)) {
+ //      familyDetailData.add(FamilyDetails(
+ //        familyMemberName: TextEditingController(text: ''),
+ //        realationShip: '',
+ //        realationShipToggle: false,
+ //      ));
+ //    } else {
+ //      CustomSnackbar.show(
+ //        snackbarType: SnackbarType.ERROR,
+ //        message: "Enter Name First",
+ //      );
+ //    }
+ //    emit(loadedState.copywith(familyDetailData: familyDetailData, random: Random().nextDouble()));
+ //  }
 
+ //  void deleteFamilyMember({required int index}) {
+ //    var loadedState = state as CreateNewLoadedState;
+ //    familyDetailData.removeAt(index);
+ //    emit(
+ //      loadedState.copywith(familyDetailData: familyDetailData, random: Random().nextDouble()),
+ //    );
+ //  }
+  
  Future<void> loadInitialData() async {
     Either<AppError, List<ProductDataEntity>> response = await getProductData(NoParams());
     response.fold(
