@@ -46,7 +46,21 @@ class HomeCubit extends Cubit<HomeState> {
       },
     );
   }
-
+  //filtert
+  // void selectedTapOrderHistory({
+ //    required OrderHistoryLoadedState state,
+ //    required OrderFilterEnum data,
+ //  }) {
+ //    if (data == OrderFilterEnum.all) {
+ //      loadInitialData(selectedFilterIndex: 0);
+ //    } else if (data == OrderFilterEnum.delivered) {
+ //      loadInitialData(status: 'Delivered', selectedFilterIndex: 1);
+ //    } else if (data == OrderFilterEnum.cancelled) {
+ //      loadInitialData(status: 'Fail', selectedFilterIndex: 2);
+ //    } else if (data == OrderFilterEnum.refunded) {
+ //      loadInitialData(status: 'Refunded', selectedFilterIndex: 3);
+ //    }
+ //  }
   // final picker = ImagePicker();
 
   // Future<void> selectImage() async {
